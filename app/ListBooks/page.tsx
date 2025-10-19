@@ -36,6 +36,7 @@ export default function ListBooks() {
     const data = await response.json()
     setBooks(data)
   }
+
   async function handleDeleteBook(id : number) {
     await Swal.fire({
       title: 'Are you sure?',
@@ -94,7 +95,7 @@ export default function ListBooks() {
               Add Book
             </button>
             {showModalAdd && createPortal(
-              <ModalAddBooks closeModal={() => setShowModalAdd(false)} />, document.body
+              <ModalAddBooks closeModal={() => setShowModalAdd(false)}  upadateList = {getBooks()} />, document.body
 
             )}
             <div className="relative">

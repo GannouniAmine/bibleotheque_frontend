@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from "react"
 import Swal from "sweetalert2"
-export default function ModalAddBooks({ closeModal } : any ) {
+export default function ModalAddBooks({ closeModal , upadateList } : any ) {
   const [book, setBook] = useState({
     title: '',
     author: '',
@@ -31,6 +31,8 @@ export default function ModalAddBooks({ closeModal } : any ) {
       if(!response.ok){
         throw new Error('Error adding book')
       }
+      upadateList
+      
       closeModal()
       Swal.fire({
         title: 'Book Added',
