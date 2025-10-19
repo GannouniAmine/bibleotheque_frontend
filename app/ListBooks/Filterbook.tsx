@@ -6,7 +6,7 @@ export default function Filterbook(props : any) {
 
     const handleGenreChange = (genre: string) => {
         if (props.selectedGenres.includes(genre)) {
-        props.setSelectedGenres(props.selectedGenres.filter(g  => g !== genre));
+        props.setSelectedGenres(props.selectedGenres.filter((g : string)  => g !== genre));
         } else {
         props.setSelectedGenres([...props.selectedGenres, genre]);
         }
@@ -14,7 +14,7 @@ export default function Filterbook(props : any) {
 
   const handleStatusChange = (status: string) => {
     if (props.selectedStatus.includes(status)) {
-      props.setSelectedStatus(props.selectedStatus.filter(s => s !== status));
+      props.setSelectedStatus(props.selectedStatus.filter((s : string) => s !== status));
     } else {
       props.setSelectedStatus([...props.selectedStatus, status]);
     }

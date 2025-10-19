@@ -16,6 +16,7 @@ export default function ModalAddBooks({ closeModal , upadateList } : any ) {
     setBook({ ...book, [name]: value })
     console.log(book)
   }
+  
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault()
 
@@ -32,7 +33,7 @@ export default function ModalAddBooks({ closeModal , upadateList } : any ) {
         throw new Error('Error adding book')
       }
       upadateList
-      
+
       closeModal()
       Swal.fire({
         title: 'Book Added',

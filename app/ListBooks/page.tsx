@@ -13,8 +13,8 @@ export default function ListBooks() {
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [books, setBooks] = useState<Book[]>([]);
   const [open, setOpen] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
 
