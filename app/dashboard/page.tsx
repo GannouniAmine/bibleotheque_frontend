@@ -28,13 +28,13 @@ export default function Dashboard() {
   const bookToread = data.filter((book) => book.status === 'TO READ')
   const bookReading = data.filter((book) => book.status === 'READING')
   const bookFinished = data.filter((book) => book.status === 'FINISHED')
+  const booksFinishedcetteAnnee =  bookFinished.filter((book) => {
+    const year = new Date(book.date_fin_lecture).getFullYear();
+    return year === new Date().getFullYear();
+  })
   const bookAbandoned = data.filter((book) => book.status === 'ABANDONED')
   const booksLusCetteAnnee = data.filter((book) => {
     const year = new Date(book.date_debut_lecture).getFullYear();
-    return year === new Date().getFullYear();
-  });
-  const booksLusFinCetteAnnee = data.filter((book) => {
-    const year = new Date(book.date_fin_lecture).getFullYear();
     return year === new Date().getFullYear();
   });
 
@@ -68,7 +68,7 @@ for (const [genre, c] of Object.entries(count)) {
         bookAbandoned={bookAbandoned}
         booksLusCetteAnnee={booksLusCetteAnnee}
         generePrefere={maxGenre}
-        annulgoal ={booksLusFinCetteAnnee}
+        annulgoal ={booksFinishedcetteAnnee}
       />
 
       <BookList
