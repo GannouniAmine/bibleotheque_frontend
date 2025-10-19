@@ -14,9 +14,7 @@ export default function Profil() {
     email : '',
     nom : '',
   })
-
-  const router = useRouter()
-
+  
   const [PasswordChange,SetPasswordChange] = useState({
     password:'',
     newPassword:'',
