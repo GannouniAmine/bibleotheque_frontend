@@ -1,14 +1,13 @@
 'use client';
 import { useRouter } from "next/navigation"
 import { FormEvent,useState } from "react"
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
   const [user , setUser] = useState({
     email : '' ,
     password : ''
   })
-
-  const router = useRouter()
  
 function handleChange(e : React.ChangeEvent<HTMLInputElement>){
   const { name , value} = e.target
@@ -32,6 +31,11 @@ function handleChange(e : React.ChangeEvent<HTMLInputElement>){
       localStorage.setItem('token' , data.access_token)
       window.location.href = '/dashboard'
     } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "False information",
+      })
    
     }
   }
