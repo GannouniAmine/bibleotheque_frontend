@@ -21,8 +21,8 @@ export default function BookInfo() {
   }
 
    useEffect(() => {
-    if (id) getBookInfo();
-  }, [id]);
+     getBookInfo();
+  });
 
   async function getBookInfo() {
       const response = await fetch(`http://localhost:5000/books/getBookById/${id}`, {

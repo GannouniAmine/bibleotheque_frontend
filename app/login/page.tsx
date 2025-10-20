@@ -67,6 +67,7 @@ function handleChange(e : React.ChangeEvent<HTMLInputElement>){
                   name="email"
                   value = {user.email}
                   onChange ={handleChange}
+                  placeholder="name@mail.com"
                   required
                   autoComplete="email"
                   className="block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 
@@ -91,6 +92,7 @@ function handleChange(e : React.ChangeEvent<HTMLInputElement>){
                   name="password"
                   value = {user.password}
                    onChange ={handleChange}
+                   placeholder="••••••••"
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 
