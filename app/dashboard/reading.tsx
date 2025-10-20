@@ -1,48 +1,53 @@
-import { BookOpen, BookMarked, CheckCircle, XCircle, Star, Target, Heart } from "lucide-react"
 
 export default function Reading(props: any) {
   const stats = [
     {
+     
       title: "Books To Read",
       value: props.bookToread.length,
       color: "text-blue-500",
-      icon: <BookOpen className="w-8 h-8 text-blue-500" />,
+      icon: <img title="image-Yes" src="/book.gif" className="w-20 h-20 text-green-500" />,
     },
+    
     {
       title: "Books Reading",
       value: props.bookReading.length,
-      color: "text-yellow-500",
-      icon: <BookMarked className="w-8 h-8 text-yellow-500" />,
+      color: "text-blue-500",
+      icon: <img title="image-Yes" src="/bookfermer.gif" className="w-20 h-20 text-green-500" />,
     },
     {
       title: "Books Finished",
       value: props.bookFinished.length,
       color: "text-green-500",
-      icon: <CheckCircle className="w-8 h-8 text-green-500" />,
+      icon: <img title="image-Yes" src="/yes-check.gif" className="w-20 h-20 text-green-500" />,
     },
+   
     {
       title: "Books Abandoned",
       value: props.bookAbandoned.length,
       color: "text-red-500",
-      icon: <XCircle className="w-8 h-8 text-red-500" />,
+      icon:  <img title="image-no" src="/false-no.gif" className="w-20 h-20 text-green-500" />,
     },
+    
     {
       title: `Books Read in ${new Date().getFullYear()}`,
       value: props.booksLusCetteAnnee.length,
       color: "text-pink-500",
-      icon: <Heart className="w-8 h-8 text-pink-500" />,
+      icon: <img title="image-no" src="/heart.gif" className="w-20 h-20 text-green-500" />,
     },
+    
     {
       title: "Most Preferred Genre",
       value: props.generePrefere,
-      color: "text-purple-500",
-      icon: <Star className="w-8 h-8 text-purple-500" />,
+      color: "text-yellow-500",
+      icon:  <img title="image-no" src="/stargif.gif" className="w-20 h-20 text-green-500" />,
     },
+    
     {
       title: "My Annual Goal",
       value: `${props.annulgoal.length} / 24`,
-      color: "text-amber-500",
-      icon: <Target className="w-8 h-8 text-amber-500" />,
+      color: "text-blue-500",
+      icon: <img title="image-no" src="/target.gif" className="w-20 h-20 text-green-500" />,
     },
   ]
 
