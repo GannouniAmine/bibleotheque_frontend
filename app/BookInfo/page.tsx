@@ -7,12 +7,13 @@ import Swal from "sweetalert2";
 import StarRate from "./startrate";
 
 export default function BookInfo() {
+  const lireStatus = ['TO READ', 'READING', 'FINISHED' ,'ABANDONED']
   const [bookDetail, setBookDetail] = useState<Book | null>(null);
   const [modifier , setModifier] = useState(false);
   const params = useSearchParams();
   const id = params.get("id");
 
-  function handleChangeBookInfo(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChangeBookInfo(event: any ) {
     const { name, value } = event.target;
     if (bookDetail) {
       setBookDetail({ ...bookDetail, [name]: value });
@@ -159,17 +160,26 @@ export default function BookInfo() {
             </div>
 
             <div>
-              <label className="block text-gray-700 dark:text-gray-300 mb-1">Reading Status</label>
-              <input
-                title="status"
-                type="text"
-                name="status"
-                value={bookDetail?.status || ""}
-                onChange={handleChangeBookInfo}
-                className="w-full p-2 border rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-                disabled={!modifier}
-              />
-            </div>
+                <label className="block text-gray-700 dark:text-gray-300 mb-1">
+                  Reading Status
+                </label>
+                <select
+                  title="status"
+                  name="status"
+                  value={bookDetail?.status || ""}
+                  onChange={handleChangeBookInfo}
+                  className="w-full p-2 border rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  disabled={!modifier}
+                >
+                  <option value="">Select a status</option>
+                  {lireStatus.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
 
             <div>
               <label className="block text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
