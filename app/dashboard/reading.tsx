@@ -5,7 +5,7 @@ export default function Reading(props: any) {
      
       title: "Books To Read",
       value: props.bookToread.length,
-      color: "text-blue-500",
+      color: "text-green-500",
       icon: <img title="image-Yes" src="/book.gif" className="w-20 h-20 text-green-500" />,
     },
     
