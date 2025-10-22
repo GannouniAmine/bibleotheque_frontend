@@ -8,6 +8,7 @@ import BookCard from "./BookCard";
 import Swal from "sweetalert2";
 import Filterbook from "./Filterbook";
 import { Book } from "./Book.entity";
+import {getBooks , deleteBook} from "../../api/booksapi"
 
 export default function ListBooks() {
 
@@ -20,51 +21,15 @@ export default function ListBooks() {
 
 
   useEffect(() => {
-    getBooks()
+    getBooks(setBooks)
   }, [])
   function toggleDropdown (){
     setOpen(!open);
   }
 
-  
-  async function getBooks() {
-    const response = await fetch('http://localhost:5000/books/getuserBooks' , {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'authorization' : `Bearer ${localStorage.getItem('token')}`}
-    })
-    const data = await response.json()
-    setBooks(data)
-  }
 
   async function handleDeleteBook(id : number) {
-    await Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-         const response = await fetch(`http://localhost:5000/books/deletebook/${id}` , {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'authorization' : `Bearer ${localStorage.getItem('token')}`}
-    }) 
-    Swal.fire({
-      title: 'Deleted!',
-      text: 'Your file has been deleted.',
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
-    })
-    getBooks()
-      }
-    })
+    await deleteBook(id , setBooks )
   }
 
   const filteredBooks = books.filter(book => {
@@ -72,10 +37,12 @@ export default function ListBooks() {
     const statusMatch = selectedStatus.length === 0 || selectedStatus.includes(book.status);
     const titleMatch = searchTerm === '' || book.titre.toLowerCase().includes(searchTerm.toLowerCase());
     const authorMatch = searchTerm === '' || book.auteur.toLowerCase().includes(searchTerm.toLowerCase());
-
     return genreMatch && statusMatch && (titleMatch || authorMatch);
   });
 
+  async function handleSearchChange(event : any){
+    setSearchTerm(event.target.value);
+  }
   
  
 
@@ -96,7 +63,7 @@ export default function ListBooks() {
               Add Book
             </button>
             {showModalAdd && createPortal(
-              <ModalAddBooks closeModal={() => setShowModalAdd(false)}  upadateList = {getBooks()} />, document.body
+              <ModalAddBooks closeModal={() => setShowModalAdd(false)}  upadateList = {getBooks(setBooks)} />, document.body
 
             )}
             <div className="relative">
@@ -153,7 +120,7 @@ export default function ListBooks() {
           <input
             type="text"
             placeholder="🔍  Search books by title or by author..."
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="w-full p-2 pl-10 rounded-lg border border-gray-300 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>

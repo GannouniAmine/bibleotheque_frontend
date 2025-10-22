@@ -1,12 +1,13 @@
-'use client';
-import { useRouter } from "next/navigation"
-import { FormEvent,useState } from "react"
-import Swal from "sweetalert2";
+"use client";
+import { FormEvent, useState } from "react";
+import { Login, User } from "../../api/authenticationApi";
+
 
 export default function LoginPage() {
-  const [user , setUser] = useState({
-    email : '' ,
-    password : ''
+  const [user , setUser] = useState<User>({
+    email: "",
+    password: "",
+    nom: "" 
   })
  
 function handleChange(e : React.ChangeEvent<HTMLInputElement>){
@@ -16,29 +17,13 @@ function handleChange(e : React.ChangeEvent<HTMLInputElement>){
     [name] : value
   })
 }
+async function handleSubmit(e : FormEvent<HTMLFormElement> ){
+  e.preventDefault()
+  await Login(user)
+}
 
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
- 
-    const response = await fetch('http://localhost:5000/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
-    const data = await response.json();
-    if (response.ok) {
-      localStorage.setItem('token' , data.access_token)
-      window.location.href = '/dashboard'
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: "False information",
-      })
-   
-    }
-  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

@@ -2,13 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-
-
+import { Register } from "../../api/authenticationApi";
 
 
 export default function Signup() {
-  const router = useRouter()
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [userData , setUserData] = useState({
     email : '',
@@ -24,36 +22,14 @@ export default function Signup() {
   })
   }
 
-
   async function handleSubmit(e : React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-     setError(null);
-    const user = {
-      email : userData.email,
-      nom : userData.nom,
-      password : userData.password
-    }
+    if(await Register(userData , setError)){
+      router.push('/login')
+  }}
 
-    if(userData.password !== userData.repeatPassword){
-      setError('Passwords do not match');
-      return
-    }
-    const response = await fetch( 'http://localhost:5000/auth/register',
-      {
-        method : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      }
-    )
-    if (!response.ok) {
-      setError("User already exists"); 
-      return;
-    }
-    router.push('/login')
-    
-  }
+
+ 
 
 
   return (

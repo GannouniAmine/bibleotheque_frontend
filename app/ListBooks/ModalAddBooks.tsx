@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from "react"
-import Swal from "sweetalert2"
+import {addBook} from "../../api/booksapi"
+import {genres} from "../../const"
 export default function ModalAddBooks({ closeModal , upadateList } : any ) {
   const [book, setBook] = useState({
     title: '',
@@ -9,40 +10,19 @@ export default function ModalAddBooks({ closeModal , upadateList } : any ) {
     publicationDate: '',
     genre: '',
     coverUrl: ''
-  })
-  const genres = ['Novel','Adventure','Science Fiction','Fantasy','Mystery','Historical','Romance','Horror','Biography','Essay','Poetry','Drama','Fairy Tale','Comic Book','Self-Help','Non-Fiction']
-  async function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    const { name, value } = e.target
-    setBook({ ...book, [name]: value })
-    console.log(book)
+  })  
+  async function handleChange(e: any) {
+      const { name, value } = e.target
+      setBook({ ...book, [name]: value })
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    await addBook(book ,upadateList)
+    closeModal()
   }
   
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-      e.preventDefault()
-
-      const response = await fetch ("http://localhost:5000/books/createBook" ,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json" ,
-                'Authorization': `Bearer ${localStorage.getItem('token')}`},
-            body: JSON.stringify(book)
-        }
-      )
-      if(!response.ok){
-        throw new Error('Error adding book')
-      }
-      upadateList
-
-      closeModal()
-      Swal.fire({
-        title: 'Book Added',
-        text: 'Book added successfully',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      })
-  }
-
+  
   return (
         <>
       <div

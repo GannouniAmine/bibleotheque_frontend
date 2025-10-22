@@ -1,9 +1,8 @@
 import { useState } from "react";
+import {genres , lireStatus} from "../../const"
 
 export default function Filterbook(props : any) {
-    const genres = ['Novel','Adventure','Science Fiction','Fantasy','Mystery','Historical','Romance','Horror','Biography','Essay','Poetry','Drama','Fairy Tale','Comic Book','Self-Help','Non-Fiction']
-    const lireStatus = ['TO READ', 'READING', 'FINISHED' ,'ABANDONED']
-
+    
     const handleGenreChange = (genre: string) => {
         if (props.selectedGenres.includes(genre)) {
         props.setSelectedGenres(props.selectedGenres.filter((g : string)  => g !== genre));
@@ -12,13 +11,14 @@ export default function Filterbook(props : any) {
         }
     };
 
-  const handleStatusChange = (status: string) => {
-    if (props.selectedStatus.includes(status)) {
-      props.setSelectedStatus(props.selectedStatus.filter((s : string) => s !== status));
-    } else {
-      props.setSelectedStatus([...props.selectedStatus, status]);
-    }
-  };
+    const handleStatusChange = (status: string) => {
+      if (props.selectedStatus.includes(status)) {
+        props.setSelectedStatus(props.selectedStatus.filter((s : string) => s !== status));
+      } else {
+        props.setSelectedStatus([...props.selectedStatus, status]);
+      }
+    };
+
   return (
     <>
     <div className="w-full p-3 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border dark:border-gray-700">
@@ -42,7 +42,7 @@ export default function Filterbook(props : any) {
     <div className="w-full p-3 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border dark:border-gray-700">
       <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">Status</h6>
       <ul className="space-y-2 text-sm">
-    { lireStatus.map((status , index) => (
+     {lireStatus.map((status , index) => (
         <li key={index} className="flex items-center">
           <input
             id={status}

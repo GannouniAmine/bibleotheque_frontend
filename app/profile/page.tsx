@@ -1,25 +1,29 @@
 'use client'
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
-import Swal from "sweetalert2";
+import {changePassword, User} from "../../api/authenticationApi"
+import { getProfile , updateProfile } from "../../api/userApi";
 
 export default function Profil() {
-  useEffect(() => {
-     getProfile();
-  }, []);
+  
   const [modifier, setModifier] = useState(false)
   const [modifierPass ,setModifierPass] = useState(false)
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<User>({
     email : '',
     nom : '',
   })
   
-  const [PasswordChange,SetPasswordChange] = useState({
+  const [PasswordChange,setPasswordChange] = useState({
     password:'',
     newPassword:'',
     confirmNewPassword:''
   })
+
+  useEffect(() => {
+     getProfile(setProfile);
+  }, []);
+
+
   function handleClick() {
     setModifier(!modifier)
     setModifierPass(false)
@@ -27,92 +31,28 @@ export default function Profil() {
   function handleClickPass() {
     setModifier(false)
     setModifierPass(!modifierPass)
-    SetPasswordChange({ password: '', newPassword: '', confirmNewPassword: '' });
+    setPasswordChange({ password: '', newPassword: '', confirmNewPassword: '' });
   }
 
 
 
   async function handleChangePass(e : React.ChangeEvent<HTMLInputElement>){
     const {name,value} = e.target
-    SetPasswordChange({...PasswordChange,[name]:value})
+    setPasswordChange({...PasswordChange,[name]:value})
   }
 
   async function handleSubmitPass(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault()
-    if(PasswordChange.newPassword !== PasswordChange.confirmNewPassword){
-       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Passwords do not match',
-      });
-      return
-    }
-
-    const response = await fetch('http://localhost:5000/users/changePassword', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}`},
-      body: JSON.stringify(PasswordChange),
-    })
-    const data = await response.json()
-    if (!response.ok) {
-       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: data.message,
-      });
-      SetPasswordChange({ password: '', newPassword: '', confirmNewPassword: '' });
-      return;
-    }
-     Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Password changed successfully!',
-      });
-    setModifierPass(!modifierPass);
-    SetPasswordChange({ password: '', newPassword: '', confirmNewPassword: '' });
-    return;
-  }
-
-
-  async function getProfile(){
-    const response = await fetch('http://localhost:5000/users/profile', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}`},
-    })
-    const data = await response.json()
-    if (!response.ok) {
-      return
-    }
-    setProfile(data);
+    await  changePassword(PasswordChange , setPasswordChange ,setModifierPass, modifierPass)
   }
 
   function handleChangeProfile(e: React.ChangeEvent<HTMLInputElement>) {
   const { name, value } = e.target;
-  setProfile({ ...profile, [name]: value });
-}
-console.log(profile)
+  setProfile({ ...profile, [name]: value });}
+
 async function handleProfileSubmit(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
-
-  const response = await fetch('http://localhost:5000/users/updateProfile', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}`},
-    body: JSON.stringify(profile),
-  })
-  const data = await response.json()
-  if (!response.ok) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: data.message,
-      });
-    return;
-  }
-  Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Profile update with success !',
-  });
+  await updateProfile(profile)
 
 }
 

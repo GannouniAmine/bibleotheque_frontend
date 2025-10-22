@@ -4,60 +4,56 @@ import { useEffect, useState } from 'react'
 import { Book } from '../ListBooks/Book.entity'
 import Reading from './reading'
 import BookList from './bookList'
+import { getBooks } from '../../api/booksapi'
 
 export default function Dashboard() {
   const [data, setData] = useState<Book[]>([])
+  const [bestGenere , setBestGenere] = useState<string>('')
 
   useEffect(() => {
-    getBooks()
-  }, [])
-
-  async function getBooks() {
-      const response = await fetch('http://localhost:5000/books/getuserBooks', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      const booksData = await response.json()
-      setData(booksData)}
-
+    getBooks(setData)
+    getMostFrequentGenre(data)
+  })
 
 
   const bookToread = data.filter((book) => book.status === 'TO READ')
   const bookReading = data.filter((book) => book.status === 'READING')
   const bookFinished = data.filter((book) => book.status === 'FINISHED')
+  const bookAbandoned = data.filter((book) => book.status === 'ABANDONED')
+  const LastfiveBooks = bookFinished.slice(-5)
   const booksFinishedcetteAnnee =  bookFinished.filter((book) => {
     const year = new Date(book.date_fin_lecture).getFullYear();
     return year === new Date().getFullYear();
   })
-  const bookAbandoned = data.filter((book) => book.status === 'ABANDONED')
   const booksLusCetteAnnee = data.filter((book) => {
     const year = new Date(book.date_debut_lecture).getFullYear();
     return year === new Date().getFullYear();
   });
 
-  const count: Record<string, number> = {};
-  data.forEach((book) => {
-  if (count[book.genre]) {
-    count[book.genre] += 1; 
-  } else {
-    count[book.genre] = 1; 
-  }
-  });
+  
+  let maxCount = 0;
+  function getMostFrequentGenre(data: { genre: string }[]): void {
+    const count: Record<string, number> = {};
 
-var maxGenre = "";
-var maxCount = 0;
+    data.forEach((book) => {
+      if (count[book.genre]) {
+        count[book.genre] += 1;
+      } else {
+        count[book.genre] = 1;
+      }
+    });
 
-for (const [genre, c] of Object.entries(count)) {
-    if (c > maxCount) {
-      maxCount = c;
-      maxGenre = genre;
+    for (const [genre, c] of Object.entries(count)) {
+      if (c > maxCount) {
+        maxCount = c;
+        setBestGenere(genre)
+      }
     }
   }
 
-  const LastfiveBooks = bookFinished.slice(-5)
+    
+
+  
 
   return (
     <div className="min-h-screen bg-white-100 dark:bg-white-900 py-16 px-6">
@@ -67,7 +63,7 @@ for (const [genre, c] of Object.entries(count)) {
         bookFinished={bookFinished}
         bookAbandoned={bookAbandoned}
         booksLusCetteAnnee={booksLusCetteAnnee}
-        generePrefere={maxGenre}
+        generePrefere={bestGenere}
         annulgoal ={booksFinishedcetteAnnee}
       />
 

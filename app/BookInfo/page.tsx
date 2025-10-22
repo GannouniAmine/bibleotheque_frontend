@@ -3,8 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Book } from "../ListBooks/Book.entity";
-import Swal from "sweetalert2";
 import StarRate from "./startrate";
+import {getBookInfo,updateBook} from "../../api/booksapi"
 
 export default function BookInfo() {
   const lireStatus = ['TO READ', 'READING', 'FINISHED' ,'ABANDONED']
@@ -21,43 +21,17 @@ export default function BookInfo() {
   }
 
    useEffect(() => {
-     getBookInfo();
-  });
+     getBookInfo(id , setBookDetail);
+  },[]);
 
-  async function getBookInfo() {
-      const response = await fetch(`http://localhost:5000/books/getBookById/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-      });
-      const data = await response.json();
-      setBookDetail(data);
-  }
   async function handleClick() {
     setModifier(!modifier);
   }
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (bookDetail) {
-      await fetch(`http://localhost:5000/books/updatebook/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify(bookDetail),
-      });
-      Swal.fire({
-        icon: "success",
-        title: "Book updated successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      })
+  async function handleSubmit(e : React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await updateBook(id , bookDetail)
   }
-}
+  
 
   return (
   <div className="bg-white-100 dark:bg-white-800 py-10 min-h-screen">
@@ -68,7 +42,7 @@ export default function BookInfo() {
             <img
               className="w-full h-full object-cover"
               src={bookDetail?.couverture_url}
-              alt={bookDetail?.titre || "Book cover"}
+              alt={bookDetail?.titre}
             />
           </div>
         </div>

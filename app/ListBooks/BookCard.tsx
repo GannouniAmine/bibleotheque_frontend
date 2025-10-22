@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { FaStar } from "react-icons/fa";
+import StarRate from "../BookInfo/startrate";
 
 export default function BookCard(props: any) {
   return (
@@ -20,17 +21,10 @@ export default function BookCard(props: any) {
         <p className="text-gray-500 dark:text-gray-400 text-sm">Published: {props.date_publication}</p>
         <p className="text-gray-500 dark:text-gray-400 text-sm">Genre: {props.genre}</p>
         <div className="flex space-x-1 mt-1">
-          {[...Array(5)].map((_, index) => {
-            const rateValue = index + 1;
-            return (
-              <FaStar
-                key={rateValue}
-                size={20}
-                className="transition-colors duration-200 mb-3 "
-                color={rateValue <= (props.note) ? "#facc15" : "#d1d5db"}
-              />
-            );
-          })}
+          <StarRate 
+          editable={false}
+          bookDetail={props}
+          />
         </div>
         <Link
          className="rounded-md bg-slate-600 py-2 px-4 border border-transparent text-center text-sm text-white shadow-md 
