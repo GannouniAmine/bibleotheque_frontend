@@ -5,9 +5,8 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import ModalAddBooks from "./ModalAddBooks";
 import BookCard from "./BookCard";
-import Swal from "sweetalert2";
 import Filterbook from "./Filterbook";
-import { Book } from "./Book.entity";
+import { Book } from "../../model/Book.entity";
 import {getBooks , deleteBook} from "../../api/booksapi"
 
 export default function ListBooks() {

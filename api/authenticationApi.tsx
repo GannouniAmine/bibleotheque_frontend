@@ -1,16 +1,13 @@
+import { ChangePassword } from "@/model/ChangePassword.entity";
+import { LoignInfo } from "@/model/LoignInfo.entity";
+import { RegisterUser } from "@/model/RegisterUser.entity";
 import Swal from "sweetalert2";
 
 
-export interface User {
-  id?: number;
-  email?: string;
-  nom?: string;
-  password?: string;
-  repeatPassword?: string
-}
+
 
   
-async function Login(user : User) {
+async function Login(user : LoignInfo) {
 
     const response = await fetch('http://localhost:5000/auth/login', {
       method: 'POST',
@@ -31,7 +28,7 @@ async function Login(user : User) {
 }
 
 
-async function Register(userData: User, setError: any) {
+async function Register(userData: RegisterUser, setError: any) {
   setError(null);
   const user = {
     email: userData.email,
@@ -58,7 +55,7 @@ async function Register(userData: User, setError: any) {
   return true; 
 }
 
- async function changePassword(PasswordChange : any , setPasswordChange : any , setModifierPass : any , modifierPass :any ){
+ async function changePassword(PasswordChange : ChangePassword , setPasswordChange : any , setModifierPass : any , modifierPass :any ){
     if(PasswordChange.newPassword !== PasswordChange.confirmNewPassword){
        Swal.fire({
         icon: 'error',

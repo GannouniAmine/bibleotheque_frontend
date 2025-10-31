@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Book } from '../ListBooks/Book.entity'
+import { Book } from '../../model/Book.entity'
 import Reading from './reading'
 import BookList from './bookList'
 import { getBooks } from '../../api/booksapi'

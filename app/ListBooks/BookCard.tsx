@@ -1,8 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import { FaStar } from "react-icons/fa";
-import StarRate from "../BookInfo/startrate";
+import StarRate from "../../sharedComponent/startrate";
 
 export default function BookCard(props: any) {
   return (

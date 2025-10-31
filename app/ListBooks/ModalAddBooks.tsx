@@ -1,30 +1,43 @@
 'use client'
 import React, { useState } from "react"
-import {addBook} from "../../api/booksapi"
-import {genres} from "../../const"
-export default function ModalAddBooks({ closeModal , upadateList } : any ) {
-  const [book, setBook] = useState({
-    title: '',
-    author: '',
-    ISBN: '',
-    publicationDate: '',
-    genre: '',
-    coverUrl: ''
-  })  
-  async function handleChange(e: any) {
-      const { name, value } = e.target
-      setBook({ ...book, [name]: value })
+import { addBook } from "../../api/booksapi"
+import { genres } from "../../const"
+import { Book } from "@/model/Book.entity"
+import Input from "@/sharedComponent/Input"
+
+
+export default function ModalAddBooks({ closeModal, upadateList }: any) {
+  const [book, setBook] = useState<Book>({
+    id: 0,
+    titre: "",
+    auteur: "",
+    isbn: "",
+    date_publication: new Date(),
+    genre: "",
+    couverture_url: "",
+    status: "TO READ",
+    date_debut_lecture: new Date(),
+    date_fin_lecture: new Date(),
+    note: 0,
+    notes_personnelles: "",
+    created_at: new Date(),
+    updated_at: new Date(),
+    user_id: 0
+  });
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    const { name, value } = e.target;
+    setBook({ ...book, [name]: value });
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    await addBook(book ,upadateList)
-    closeModal()
+    e.preventDefault();
+    await addBook(book, upadateList);
+    closeModal();
   }
-  
-  
+
   return (
-        <>
+    <>
       <div
         onClick={closeModal}
         className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity cursor-pointer z-10"
@@ -47,77 +60,41 @@ export default function ModalAddBooks({ closeModal , upadateList } : any ) {
         </h2>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            value={book.title}
+          <Input
+            label="Title"
+            name="titre"
+            value={book.titre}
             onChange={handleChange}
             placeholder="Enter title..."
-            className="w-full p-2.5 border border-gray-300 dark:border-gray-600 
-                      rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white
-                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
-                      transition"
             required
           />
-        </div>
 
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Author
-          </label>
-          <input
-            type="text"
-            name="author"
-            value={book.author}
+          <Input
+            label="Author"
+            name="auteur"
+            value={book.auteur}
             onChange={handleChange}
             placeholder="Enter author..."
-            className="w-full p-2.5 border border-gray-300 dark:border-gray-600 
-                      rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white
-                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
-                      transition"
             required
           />
-        </div>
 
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            ISBN
-          </label>
-          <input
-            type="text"
-            name="ISBN"
-            value={book.ISBN}
+          <Input
+            label="ISBN"
+            name="isbn"
+            value={book.isbn}
             onChange={handleChange}
             placeholder="Enter ISBN..."
-            className="w-full p-2.5 border border-gray-300 dark:border-gray-600 
-                      rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white
-                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
-                      transition"
             required
           />
-        </div>
 
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Cover URL
-          </label>
-          <input
-            type="text"
-            name="coverUrl"
-            value={book.coverUrl}
+          <Input
+            label="Cover URL"
+            name="couverture_url"
+            value={book.couverture_url}
             onChange={handleChange}
             placeholder="Enter cover URL..."
-            className="w-full p-2.5 border border-gray-300 dark:border-gray-600 
-                      rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white
-                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
-                      transition"
             required
           />
-        </div>
 
           <div>
             <label htmlFor="genre" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -141,23 +118,14 @@ export default function ModalAddBooks({ closeModal , upadateList } : any ) {
             </select>
           </div>
 
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-              Publication Date
-            </label>
-            <input
-              type="date"
-              name="publicationDate"
-              placeholder="publication date ..."
-              value={book.publicationDate}
-              onChange={handleChange}
-              className="w-full p-2.5 border border-gray-300 dark:border-gray-600 
-                         rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white
-                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
-                         transition"
-              required
-            />
-          </div>
+          <Input
+            label="Publication Date"
+            name="date_publication"
+            type="date"
+            value={book.date_publication?.toString().split("T")[0]}
+            onChange={handleChange}
+            required
+          />
 
           <button
             type="submit"
@@ -169,5 +137,5 @@ export default function ModalAddBooks({ closeModal , upadateList } : any ) {
         </form>
       </div>
     </>
-  )
+  );
 }

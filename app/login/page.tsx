@@ -1,28 +1,28 @@
-"use client";
+'use client';
 import { FormEvent, useState } from "react";
-import { Login, User } from "../../api/authenticationApi";
+import { Login } from "../../api/authenticationApi";
+import { LoignInfo } from "@/model/LoignInfo.entity";
+import Input from "@/sharedComponent/Input";
 
 
 export default function LoginPage() {
-  const [user , setUser] = useState<User>({
+  const [user, setUser] = useState<LoignInfo>({
     email: "",
     password: "",
-    nom: "" 
-  })
- 
-function handleChange(e : React.ChangeEvent<HTMLInputElement>){
-  const { name , value} = e.target
-  setUser({
-    ...user,
-    [name] : value
-  })
-}
-async function handleSubmit(e : FormEvent<HTMLFormElement> ){
-  e.preventDefault()
-  await Login(user)
-}
+  });
 
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setUser({
+      ...user,
+      [name]: value
+    });
+  }
 
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await Login(user);
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -37,56 +37,26 @@ async function handleSubmit(e : FormEvent<HTMLFormElement> ){
             Sign in to your account
           </h2>
 
-          <form action="#" className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Email
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value = {user.email}
-                  onChange ={handleChange}
-                  placeholder="name@mail.com"
-                  required
-                  autoComplete="email"
-                  className="block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 
-                             text-gray-900 placeholder:text-gray-500 focus:border-indigo-500 
-                             focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white 
-                             dark:placeholder-gray-400"
-                />
-              </div>
-            </div>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <Input
+              label="Email"
+              name="email"
+              type="email"
+              value={user.email}
+              onChange={handleChange}
+              placeholder="name@mail.com"
+              required
+            />
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Password
-              </label>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  value = {user.password}
-                   onChange ={handleChange}
-                   placeholder="••••••••"
-                  required
-                  autoComplete="current-password"
-                  className="block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 
-                             text-gray-900 placeholder:text-gray-500 focus:border-indigo-500 
-                             focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white 
-                             dark:placeholder-gray-400"
-                />
-              </div>
-            </div>
+            <Input
+              label="Password"
+              name="password"
+              type="password"
+              value={user.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              required
+            />
 
             <button
               type="submit"
@@ -104,8 +74,7 @@ async function handleSubmit(e : FormEvent<HTMLFormElement> ){
               href="/signup"
               className="font-semibold text-blue-600 hover:text-blue-500"
             >
-              {" "}
-              Register
+              {" "}Register
             </a>
           </p>
         </div>
